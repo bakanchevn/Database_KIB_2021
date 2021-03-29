@@ -6,38 +6,47 @@
 -- Вывести имя исполнителя, тип медиа, количество альбомов с данными типом, общее количество альбомов.
 -- (artist_name, media_type_name, media_cnt, whole_cnt)
 
+WITH stat AS (
+    SELECT album_id,
+           media_type_id,
+           SUM(bytes) as size
+    FROM album al
+             JOIN artist a USING (artist_id)
+             JOIN track t USING (album_id)
+    GROUP BY album_id, media_type_id
+), media_stat AS (
+    SELECT album_id,
+           MAX(size) as sum
+    FROM stat
+    GROUP BY album_id
+), album_type AS (
+    SELECT st.album_id as album_id,
+           st.media_type_id as mt
+    FROM media_stat mst JOIN stat st ON mst.album_id = st.album_id
+                                            AND mst.sum = st.size
+), artist_stat AS (
+    SELECT artist_id,
+           mt,
+           count(album_id) as count
+    FROM album_type
+             JOIN album al USING (album_id)
+    GROUP BY artist_id, mt
+), artist_max AS (
+    SELECT artist_id,
+       MAX(count) as sum
+    FROM artist_stat
+    GROUP BY artist_id
+)
 
-WITH genre_stat AS (
-    SELECT genre_id,
-           SUM(bytes) sum
-    FROM track t
-    GROUP BY genre_id
-),
-     genre_max AS (
-         SELECT genre_id,
-                MAX(sum) as media_type
-         FROM genre_stat
-         GROUP BY genre_id
-     ),
-     general_stat AS (
-         SELECT art.name as name,
-                media_type,
-                t2.album_id as album_id
-         FROM artist art JOIN album a on art.artist_id = a.artist_id
-             JOIN track t2 on a.album_id = t2.album_id
-                JOIN genre_max USING (genre_id)
-     )
-
-
-SELECT f.name as artist_name,
-       f.media_type as media_type_name,
-       f.cnt as media_cnt,
+SELECT art.name as artist_name,
+       met.name as media_type_name,
+       sum as media_cnt,
        total as whole_cnt
-FROM (SELECT name,
-       media_type,
-       COUNT(album_id) as cnt
-FROM general_stat
-GROUP BY name, media_type) f JOIN (SELECT name,
-       count(album_id) as total
-FROM general_stat
-GROUP BY name) s on f.name = s.name
+FROM artist_max am JOIN artist_stat ast ON am.artist_id = ast.artist_id
+                                               AND am.sum = ast.count
+JOIN (SELECT artist_id,
+             sum(count) as total
+      FROM artist_stat
+      GROUP BY artist_id) t ON am.artist_id = t.artist_id
+JOIN media_type met ON met.media_type_id = mt
+    JOIN artist art ON art.artist_id = am.artist_id;

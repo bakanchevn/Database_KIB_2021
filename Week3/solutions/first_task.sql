@@ -5,5 +5,5 @@
 SELECT a.title as album_name,
        COUNT(track_id) as cnt
 FROM album a JOIN track t USING (album_id)
-GROUP BY a.title
+GROUP BY a.album_id
 HAVING AVG(t.milliseconds) > 250000;

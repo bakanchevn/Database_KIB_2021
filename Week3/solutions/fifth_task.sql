@@ -12,10 +12,10 @@ FROM customer c JOIN (
     SELECT customer_id,
            count(distinct invoice_id) as cnt_inv,
            count(distinct billing_address) as cnt_addr,
-           count(track_id) as cnt_trc
+           sum(quantity) as cnt_trc
     FROM customer c
              JOIN invoice i USING (customer_id)
              JOIN invoice_line il USING (invoice_id)
     GROUP BY customer_id) st USING (customer_id)
         JOIN employee e on c.support_rep_id = e.employee_id
-GROUP BY e.first_name || ' ' || e.last_name;
+GROUP BY e.employee_id;

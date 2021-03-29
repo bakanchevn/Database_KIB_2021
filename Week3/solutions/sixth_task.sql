@@ -19,5 +19,5 @@ FROM invoice i JOIN invoice_line il on i.invoice_id = il.invoice_id
                             WHEN CHAR_LENGTH(last_name) - CHAR_LENGTH(REPLACE(last_name, 'a', '')) > 2 THEN 'D'
                         END as segment_group
                  FROM customer) seg ON i.customer_id = seg.customer_id
-WHERE g.name IN ('Metal', 'Heavy Metal')
+WHERE g.name LIKE '%Metal'
 GROUP BY segment_group;

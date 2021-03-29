@@ -17,7 +17,7 @@ WITH company_stat AS (
      top_chart AS(
          SELECT company,
                 genre_id,
-                COUNT(track_id) as count
+                SUM(quantity) as count
          FROM company_stat
          GROUP BY company, genre_id
      ),
@@ -25,7 +25,7 @@ WITH company_stat AS (
          SELECT company,
                 genre_id,
                 name,
-                COUNT(*) as pop
+                SUM(quantity) as pop
          FROM company_stat
          GROUP BY company,genre_id,name
      ),
@@ -38,7 +38,7 @@ WITH company_stat AS (
         GROUP BY company,genre_id,name
      )
 
-SELECT DISTINCT ON (2)
+SELECT DISTINCT ON(2)
        top_chart.company,
        tp.genre_id,
        name

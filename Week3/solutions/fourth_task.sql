@@ -9,4 +9,4 @@ FROM artist art JOIN album a USING (artist_id)
         JOIN (SELECT *
               FROM genre
               WHERE name IN ('Rock', 'Metal')) g USING (genre_id)
-GROUP BY art.name;
+GROUP BY art.artist_id;
