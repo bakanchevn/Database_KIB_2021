@@ -1,0 +1,59 @@
+(base) MacBook-Air-Ardan:~ ardandorzhiev$ sh ./coffeshop.sh
+Welcome to the Dave Coffeeshop!
+davecoffeeshop.db not exists => creating db file
+success
+To log order, enter LOG
+To end session, enter EOS
+To end business day, enter EOD
+LOG
+Enter Barista
+ARDAN
+Enter Drink
+AME
+Barista name: ARDAN
+Drinking: AME
+Order was saved!
+LOG
+Enter Barista
+MARIE
+Enter Drink
+RAF
+Barista name: MARIE
+Drinking: RAF
+Order was saved!
+LOG
+Enter Barista
+ARDAN
+Enter Drink
+CAP
+Barista name: ARDAN
+Drinking: CAP
+Order was saved!
+LOG
+Enter Barista
+NICK
+Enter Drink
+COLA
+Barista name: NICK
+Drinking: COLA
+Invalid drink c, ignoring
+LOG
+Enter Barista
+MARIE
+Enter Drink
+LAT
+Barista name: MARIE
+Drinking: LAT
+Order was saved!
+EOD
+End of Day!
+MARIE;370
+ARDAN;250
+EOS 
+End of Session
+(base) MacBook-Air-Ardan:~ ardandorzhiev$ cat davecoffeeshop.db
+ARDAN;AME;100
+MARIE;RAF;200
+ARDAN;CAP;150
+MARIE;LAT;170
+(base) MacBook-Air-Ardan:~ ardandorzhiev$ 
