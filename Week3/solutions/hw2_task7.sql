@@ -13,7 +13,7 @@ with t1 as (
              join genre g
                   on t.genre_id = g.genre_id
     where company is not null
-    group by g.name, c.company, t.name
+    group by g.name, c.company, t.track_id
 ), t2 as (
     select t1.g_name                         as g_name,
            t1.company_name                   as company_name,

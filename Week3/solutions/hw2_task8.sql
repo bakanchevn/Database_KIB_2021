@@ -16,11 +16,11 @@ with t1 as (
      group
         by t1.genre_name
 ), t3 as (
-    select t1.genre_name                                             as genre_name,
-           t1.track_id                                               as track_id,
-           t1.track_name                                             as track_name,
-           t1.purchases_of_track / t2.sum_per_genre * 100            as popularity,
-           row_number() over (order by t1.genre_name, t1.track_name) as num
+    select t1.genre_name                                                                        as genre_name,
+           t1.track_id                                                                          as track_id,
+           t1.track_name                                                                        as track_name,
+           t1.purchases_of_track / t2.sum_per_genre * 100                                       as popularity,
+           row_number() over (partition by t1.genre_name order by t1.genre_name, t1.track_name) as num
     from t1
              join t2
                   on t1.genre_name = t2.genre_name
@@ -40,4 +40,4 @@ select t4.track_name as track_name,
   from t4
   join t3
     on t3.track_id = t4.track_id
- where t4.gap <= 25
+ where t4.gap <= 25;

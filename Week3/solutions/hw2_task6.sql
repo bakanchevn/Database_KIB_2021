@@ -16,7 +16,6 @@ select CASE
     on t.genre_id = g.genre_id
   join media_type mt
     on mt.media_type_id = t.media_type_id
- where g.name = 'Metal'
-    or g.name = 'Heavy Metal'
+ where  lower(g.name) like '%metal%'
  group
     by segment_group;

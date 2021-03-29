@@ -11,4 +11,4 @@ select e.last_name || ' ' || e.first_name as empl_full_name,
   join invoice_line i_l
     on i.invoice_id = i_l.invoice_id
  group
-    by (e.last_name, e.first_name);
+    by e.employee_id;
