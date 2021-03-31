@@ -21,6 +21,5 @@ from customer
          join track t on il.track_id = t.track_id
          join genre g on t.genre_id = g.genre_id
          join media_type mt on mt.media_type_id = t.media_type_id
-where g.name = 'Metal'
-   or g.name = 'Heavy Metal'
+where g.name like '%Metal'
 group by customer.last_name;
